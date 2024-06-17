@@ -9,7 +9,7 @@ import passport from "passport";
  export const configurePassport=async()=>{
     passport.serializeUser((user, done) => {
         console.log("serializing user");
-        done(null, user._id);
+        done(null, user.id);
       });
     passport.deserializeUser((id, done) => {
         console.log("deserializing user");
