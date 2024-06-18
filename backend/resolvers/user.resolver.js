@@ -1,5 +1,5 @@
 
-import { users } from '../dummyData/data.js';
+
 import bcrypt from 'bcryptjs';
 import User from '../models/user.model.js';
 
@@ -44,7 +44,8 @@ const userResolver = {
                 if(!username|| !name || !password || !gender){
                     throw new Error("Please fill all the fields");
                 }
-                const existingUser=User.findOne({username});
+                const existingUser= await User.findOne({username});
+                console.log("Existing user :",existingUser)
                 if(existingUser){
                     throw new Error("User already exists");
                 }
@@ -77,7 +78,7 @@ const userResolver = {
                 if(!username|| !password){
                     throw new Error("Please fill all the fields");
                 }
-                const user= await context.authenticate("graphql-local",{username,password});
+                const {user}= await context.authenticate("graphql-local",{username,password});
                 await context.login(user);
                 return user;    
             }
@@ -90,12 +91,12 @@ const userResolver = {
         logout: async(_,__,context)=>{
             try{
                 await context.logout();
-                req.session.destroy((err)=>{
+                context.req.session.destroy((err)=>{
                     if(err){
                         throw err;
                     }
                 });
-                res.clearCookie("connect.sid");
+                context.res.clearCookie("connect.sid");
                 return {message:"Logged out successfully"};
             }
             catch(error){
