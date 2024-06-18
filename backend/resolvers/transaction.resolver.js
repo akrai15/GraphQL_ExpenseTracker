@@ -5,9 +5,13 @@ const transactionResolver = {
     Query: {
         transactions: async(_,__,context)=>{
             try{
-                if(!context.getUser()) throw new Error("You are unauthenticated");
-                const userId=context.getUser()._id;
+                const user= await context.getUser();
+                if(!user) throw new Error("Problem with backend fetching transactions");
+                const userId = user._id;
+                
+                
                 const transactions = await Transaction.find({userId:userId});
+                console.log("transactions",transactions);
                 return transactions;
             }
             catch(error){
@@ -35,10 +39,15 @@ const transactionResolver = {
     Mutation: {
        createTransaction:async(_,{input},context)=>{
             try{
+                const user= await context.getUser();
+                if(!user) throw new Error("Problem with backend create transaction");
+                console.log("userId",user);
+                console.log("context",user._id);
                 const newTransaction = new Transaction({
                     ...input,
-                    userId:context.getUser()._id
+                    userId: user._id
                 });
+               
                 await newTransaction.save();
                 return newTransaction;
             }

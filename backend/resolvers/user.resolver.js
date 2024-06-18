@@ -9,6 +9,8 @@ const userResolver = {
         authUser: async(_,__,context)=>{
             try{
                 const user=await context.getUser();
+               
+                
                 return user;
             }
             catch(error){
