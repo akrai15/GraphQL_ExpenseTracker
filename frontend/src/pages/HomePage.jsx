@@ -85,19 +85,24 @@ const HomePage = () => {
 	}, [data]);
 	
 
+
+	
 	const handleLogout = async () => {
-		try{
+		
+			try {
+				 await logout();
+      
+	  toast.success("Logged Out");
+      
+      client.cache.reset();
+			} catch (error) {
+				console.log(error);
+				return; // Exit if logout fails
+			}
+		
 			
-			await logout();
-			client.resetStore();
-			
-
-
-		}
-		catch(error){
-			console.log("error logging out",error);
-			toast.error("Error logging out");
-		}
+		
+		
 	};
 
 	

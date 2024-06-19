@@ -6,7 +6,7 @@ const transactionResolver = {
         transactions: async(_,__,context)=>{
             try{
                 const user= await context.getUser();
-                if(!user) throw new Error("Problem with backend fetching transactions");
+                if(!user) return ;
                 const userId = user._id;
                 
                 
@@ -58,8 +58,7 @@ const transactionResolver = {
             try{
                 const user= await context.getUser();
                 if(!user) throw new Error("Problem with backend create transaction");
-                console.log("userId",user);
-                console.log("context",user._id);
+                
                 const newTransaction = new Transaction({
                     ...input,
                     userId: user._id
