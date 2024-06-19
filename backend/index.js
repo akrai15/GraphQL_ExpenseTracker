@@ -3,7 +3,7 @@ import { ApolloServer } from "@apollo/server"
 import { expressMiddleware } from '@apollo/server/express4';
 import { ApolloServerPluginDrainHttpServer } from '@apollo/server/plugin/drainHttpServer';
 import { buildContext } from "graphql-passport";
-
+import path from "path";
 
 import passport from "passport";
 import session from "express-session";
@@ -22,7 +22,7 @@ import { configurePassport } from "./passport/passport.config.js";
 dotenv.config();
 configurePassport();
 
-
+const __dirname = path.resolve();
 const app=express();
 const httpServer = http.createServer(app);
 
@@ -55,7 +55,11 @@ app.use( passport.session());
 
 
 
+app.use(express.static(path.join(__dirname, "frontend/dist")));
 
+app.get("*", (req, res) => {
+	res.sendFile(path.join(__dirname, "frontend/dist", "index.html"));
+});
 
 
 

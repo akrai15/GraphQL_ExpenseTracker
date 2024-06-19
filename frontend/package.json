@@ -16,6 +16,7 @@
     "clsx": "^2.1.1",
     "framer-motion": "^11.2.10",
     "graphql": "^16.8.2",
+    "graphql_project": "file:..",
     "mini-svg-data-uri": "^1.4.4",
     "react": "^18.2.0",
     "react-chartjs-2": "^5.2.0",
