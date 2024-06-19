@@ -2,7 +2,7 @@
 
 import bcrypt from 'bcryptjs';
 import User from '../models/user.model.js';
-
+import Transaction from '../models/transaction.model.js'
 
 const userResolver = {
     Query: {
@@ -107,6 +107,19 @@ const userResolver = {
             }
         }
 
+    },
+    User:{
+        transactions: async(parent)=>{
+            try{
+                const transactions=await Transaction.find({userId:parent._id})
+                return transactions;
+
+            }
+            catch(error){
+                console.log("Error in user transactions resolver",error);
+                throw new Error(error.message || "Internal Server Error");
+            }
+        }
     }
 };
 export default userResolver;
